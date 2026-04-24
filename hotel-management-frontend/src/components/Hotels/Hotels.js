@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";  // <-- import hooks
 import { useNavigate } from "react-router-dom";      // <-- import navigation
-import API from "../utils/api"; 
-import "../App.css"; 
+import API from "../../utils/api"; 
+import "../../App.css"; 
 export default function Hotels() {
   const [hotels, setHotels] = useState([]);
   const navigate = useNavigate();

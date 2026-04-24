@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const {UPCOMING, COMPLETED, CANCELLED} = require("../constants/constants")
+ const {ZERO, ONE, TWO} = require("../constants/constants")
 const bookingSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   hotelId: { type: mongoose.Schema.Types.ObjectId, ref: "Hotel" },
@@ -7,9 +7,9 @@ const bookingSchema = new mongoose.Schema({
   checkOut: Date,
   guests: Number,
   status: {
-  type: String,
-  enum: [UPCOMING, COMPLETED, CANCELLED],
-  default: UPCOMING
+  type: Number,
+  enum: [ZERO,ONE, TWO], //0=> upcoming, 1=>compeleted, 1=>deleted
+  default: ZERO
   
   }
 }, {timestamps: true});

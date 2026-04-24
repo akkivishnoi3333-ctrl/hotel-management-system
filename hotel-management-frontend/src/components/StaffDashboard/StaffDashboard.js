@@ -1,7 +1,7 @@
  import React, { useEffect, useState } from "react";
- import API from "../utils/api";
-import "../App.css";
-
+ import API from "../../utils/api"; 
+import "./StaffDashboard.css";
+import constants from "../../constants/constants"
 export default function StaffDashboard() {
     const [bookings, setBookings] = useState([]);
 
@@ -20,12 +20,12 @@ export default function StaffDashboard() {
 
     const checkoutBooking = async (id) => {
       await API.put(`/checkout/${id}`);
-      setBookings(bookings.map(b => b._id === id ? { ...b, status: "COMPLETED" } : b));
+      setBookings(bookings.map(b => b._id === id ? { ...b, status: constants.COMPLETED } : b));
     };
 
     const cancelBooking = async (id) => {
       await API.put(`/cancleBooking/${id}`);
-      setBookings(bookings.map(b => b._id === id ? { ...b, status: "CANCELLED" } : b));
+      setBookings(bookings.map(b => b._id === id ? { ...b, status: constants.CANCELLED } : b));
     };
   return (
     
@@ -49,16 +49,19 @@ export default function StaffDashboard() {
                <td>{b.hotelId.name}</td>
                <td>{new Date(b.checkIn).toLocaleDateString()}</td>
                <td>{new Date(b.checkOut).toLocaleDateString()}</td>
-               <td>{b.status}</td>
+               <td>{b.status === constants.UPCOMING && <span>UPCOMING</span>}
+        
+                 {b.status === constants.COMPLETED && <span>COMPELETED</span>}
+                 {b.status === constants.CANCELLED && <span>CANCELLED</span>}</td>
                <td>
-                 {b.status === "UPCOMING" && (
+                 {b.status === constants.UPCOMING && (
                    <>
                      <button onClick={() => checkoutBooking(b._id)}>Checkout</button>
                     <button  onClick={() => cancelBooking(b._id)}>Cancel</button> 
                    </>
                  )}
-                 {b.status === "COMPLETED" && <span>✔ Checked Out</span>}
-                 {b.status === "CANCELLED" && <span>✖ Cancelled</span>}
+                 {b.status === constants.COMPLETED && <span>✔ Checked Out</span>}
+                 {b.status === constants.CANCELLED && <span>✖ Cancelled</span>}
                </td>
              </tr>
            ))}

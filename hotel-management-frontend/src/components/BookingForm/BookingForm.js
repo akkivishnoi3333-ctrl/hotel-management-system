@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import API from "../utils/api";
+import API from "../../utils/api";
 import { useNavigate } from "react-router-dom";
-import "../App.css"; // custom CSS file
+import "../../App.css"; // custom CSS file
 export default function BookingForm() {
   const { hotelId } = useParams();   // get hotelId from URL
   const [hotel, setHotel] = useState(null);
@@ -28,7 +28,7 @@ const navigate = useNavigate();
     try {
       await API.post("/createBooking", { hotelId, checkIn, checkOut, guests });
       alert("Booking confirmed!");
-      navigate("/my-bookings");
+      navigate("/my-bookings",{ state: { activeTab: "UPCOMING" } });
     } catch (err) {
       alert("Error booking hotel: " + err.response?.data?.message);
     }

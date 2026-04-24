@@ -59,14 +59,40 @@ const hotel = {};
 
  hotel.getHotels = async(req, res)=>{
     try{
-        const hotels = await hotelSchema.find();
+        const page = parseInt(req.query.page) || 1
+        const limit =parseInt(req.query.limit) || 5
+        const skip = (page-1)*limit
+        let sort = {};
+        if(req.query.sort == "0"){
+           sort = {pricePerNight: 1}
+        }else{
+            sort={createdAt: -1}
+        }
+        let filter = {}
+        if(req.query.search && typeof req.query.search == "string"){
+            const search = req.query.search;
+            filter = {$or: [ {name: {$regex: search, $options: "i"}},  {pricePerNight: parseInt(search)}]}
+           
+        }
+       // const hotels = await hotelSchema.find();
+       const hotels = await hotelSchema.aggregate([
+        {$match: filter},
+        {$sort: sort},
+        {$facet: {
+            count: [{$count: "totalCount"}],
+            data: [{$limit: limit}, {$skip : skip}]
+        }}
+       ])
+       const totalCOunt = hotels[0]?.count[0]?.totalCount || 0
+       const data = hotels[0]?.data || []
         if(!hotels){
          res.status(404).json({
             message: "hotels not found"
         })}
         res.status(200).json({
             message: "hotels found found",
-             hotels
+             hotels: data,
+             count:totalCOunt
         })
     }catch(err){
           console.log(err)

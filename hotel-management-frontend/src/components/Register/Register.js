@@ -1,8 +1,8 @@
 
 import React, { useState } from "react";
-import API from "../utils/api";
+import API from "../../utils/api"; 
+import "../../App.css";
 import { useNavigate } from "react-router-dom";
-import "../App.css"; // custom CSS file
 
 export default function Register() {
   const [name, setName] = useState("");

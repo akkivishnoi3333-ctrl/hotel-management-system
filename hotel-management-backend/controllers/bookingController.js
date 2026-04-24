@@ -1,6 +1,6 @@
 const bookingSchema = require("../models/booking")
 const hotelSchema = require("../models/hotel")
-const {ZERO, ONE, TWO, UPCOMING, COMPLETED, CANCELLED} = require("../constants/constants")
+const {ZERO, ONE, TWO} = require("../constants/constants")
 const mongoose =require("mongoose")
 const booking = {};
  booking.createBooking = async(req, res)=>{
@@ -54,7 +54,7 @@ booking.cancleBooking = async(req, res)=>{
         })
     }
         //cancle booking
-          booking.status = CANCELLED;
+          booking.status = TWO;
           await booking.save();
          console.log(booking)
          //increament in hotel rooms
@@ -87,7 +87,7 @@ booking.checkout = async(req, res)=>{
         })
     }
         //checkout booking
-          booking.status = COMPLETED;
+          booking.status = ONE;
           await booking.save();
          console.log(booking)
          //increament in hotel rooms
@@ -105,24 +105,41 @@ booking.checkout = async(req, res)=>{
 }
 
  booking.getUserBooking = async(req, res)=>{
-    try{ console.log("hit")
+    try{ 
        const ObjectId = new mongoose.Types.ObjectId(req.userId)
-        const booking = await bookingSchema.find({userId: ObjectId}) 
+       if(!req.query.status){
+         const booking = await bookingSchema.find({userId: ObjectId}) 
         .populate({path:"userId", select:"-_id"})
         .populate({path:"hotelId", select:"-_id"})
         if(!booking){
-              res.status(404).json({
+            return  res.status(404).json({
             message: "booking not found"
 
         })
         }
-          res.status(200).json({
+        console.log(booking)
+         return res.status(200).json({
+            message: "booking found successfully",
+            booking
+        })
+       }
+        const booking = await bookingSchema.find({userId: ObjectId, status: req.query.status}) 
+        .populate({path:"userId", select:"-_id"})
+        .populate({path:"hotelId", select:"-_id"})
+        if(!booking){
+             return res.status(404).json({
+            message: "booking not found"
+
+        })
+        }
+        console.log(booking)
+         return res.status(200).json({
             message: "booking found successfully",
             booking
         })
     }catch(err){
         console.log(err)
-          res.status(400).json({
+         return res.status(400).json({
             message: err.message
         })
     }
@@ -134,7 +151,7 @@ booking.getAllBookings = async(req, res)=>{
         .populate({path:"userId", select:"-_id"})
         .populate({path:"hotelId", select:"-_id"})
         if(!bookings){
-              res.status(404).json({
+             return res.status(404).json({
             message: "bookings not found"
 
         })

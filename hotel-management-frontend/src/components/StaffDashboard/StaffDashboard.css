@@ -1,0 +1,48 @@
+/*staff-dashboard*/
+.staff-dashboard {
+  padding: 20px;
+  background: #f9f9f9;
+}
+
+.booking-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.booking-table th, .booking-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.booking-table th {
+  background: rgb(25, 118, 210);;
+  color: #fff;
+}
+
+.booking-table tr:nth-child(even) {
+  background: #f2f2f2;
+}
+
+button {
+  margin: 0 5px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+button:first-of-type {
+ background: #007bff;
+  color: #fff;
+}
+
+button:last-of-type {
+background: #007bff;
+  color: #fff;
+}
