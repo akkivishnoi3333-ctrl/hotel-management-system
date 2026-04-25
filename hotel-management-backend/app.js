@@ -34,10 +34,10 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-app.use(express.static(path.join(__dirname, "../../hotel-management-frontend/build")));
+app.use(express.static(path.join(__dirname, "../hotel-management-frontend/build")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../../hotel-management-frontend/build", "index.html"));
+  res.sendFile(path.join(__dirname, "../hotel-management-frontend/build", "index.html"));
 });
 
 
